@@ -10,5 +10,31 @@
     <header class="h-28 flex justify-center items-center">
         <h1 class="text-6xl relative z-10 font-bold text-red-700">MARVEL</h1>
     </header>
+    <main class="flex justify-center">
+        <form class="w-9/12 flex flex-col gap-4">
+            <div>
+                <input type="search" placeholder=" Ingresa tu búsqueda" class="w-full">
+            </div>
+            <div class="flex justify-between">
+                <label for="" class="text-red-700">Tipo</label>
+                <select name="" id="tipo-comic-character" class="w-9/12">
+                    <option value="comic">Comics</option>
+                    <option value="character">Personajes</option>
+                </select>
+            </div>
+            <div class="flex justify-between">
+                <label for="" class="text-red-700">Orden</label>
+                <select name="" id="order" class="w-9/12">
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                    <option value="new">Mas nuevos</option>
+                    <option value="old">Mas viejos</option>
+                </select>
+            </div>
+            <div class="flex justify-end">
+                <button class="bg-red-700 p-1.5 rounded-md w-28">Buscar</button>
+            </div>
+        </form>
+    </main>
 </body>
 </html>
