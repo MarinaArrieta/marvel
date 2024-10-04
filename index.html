@@ -6,14 +6,14 @@
     <title>Marvel</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-200">
+<body class="flex flex-col gap-5 bg-slate-200">
     <header class="h-48 overflow-hidden flex justify-center items-center">
         <figure class="relative z-0 w-full">
             <img class="w-full opacity-40" src="./assets/image/marvel1.jpg" alt="Marvel">
         </figure>
         <h1 class="text-6xl absolute z-10 font-bold drop-shadow-lg text-red-700">MARVEL</h1>
     </header>
-    <main class="flex justify-center items-center flex-col">
+    <main class="flex justify-center items-center flex-col gap-5">
         <form class="w-full px-5 xl:px-60">
             <ul class="flex gap-4 flex-wrap justify-between">
                 <li class="flex flex-col gap-1.5 w-full xl:w-4/12">
@@ -39,11 +39,15 @@
                 </li>
             </ul>
         </form>
-        <section>
-            <h2 class="text-red-700">Resultados</h2>
-            <ul id="marvel-list"></ul>
+        <section class="flex flex-col items-center gap-5">
+            <h2 class="w-11/12 text-red-700">Resultados</h2>
+            <p id="comics-results" class="w-11/12 text-red-700"></p>
+            <ul id="marvel-list" class="flex flex-col items-center gap-14"></ul>
         </section>
     </main>
+    <footer class="h-20 flex justify-center items-center bg-black">
+        <p class="text-lg text-red-700">Hecho con ❤️</p>
+    </footer>
 
     <script src="./assets/js/index.js"></script>
 </body>
