@@ -8,32 +8,45 @@ let mode = 'dark';
 const iconMode = document.getElementById('icon-mode');
 const tipoComicCharacter = document.getElementById('tipo-comic-character');
 const searchInput = document.getElementById('search-input');
+const marvelList = document.getElementById('marvel-list');
 
 async function getApiMarvel(){
     try{
+        let inputType = tipoComicCharacter.value
         let inputSearch = searchInput.value
-
-        const response = await fetch(url+urlComics+keyHash);
-        console.log(response)
-        const parsedMarvel = await response.json();
-        displayTotal(parsedMarvel.data.total)
-        styleCardComics(parsedMarvel.data.results);
-        console.log(parsedMarvel);
+        console.log('input searh',inputType)
+        if (inputType == 'comic'){
+            search_param = '&titleStartsWith='
+            url_type = urlComics
+        } else {
+            search_param = '&nameStartsWith='
+            url_type = urlCharacters
+        }
 
         let filter_title ='';
-        if (inputSearch == 'comic'){
-            filter_title = '&titleStartsWith=' + inputSearch;
-            
+        if (inputSearch){
+            filter_title = search_param + inputSearch;   
         }
-        
-        //searchComics(parsedMarvel.data.results.title)
+
+        url_final = url+url_type+keyHash + filter_title;
+
+        marvelList.innerHTML = '';
+        const response = await fetch(url_final);
+        console.log(response)
+        const parsedMarvel = await response.json();
+        console.log(parsedMarvel);
+        displayTotal(parsedMarvel.data.total);
+        styleCard(parsedMarvel.data.results, inputType);
     }
     catch(error){
         console.error(error);
     }
 }
 
-getApiMarvel();
+document.getElementById("form-search").addEventListener("submit", function(event){
+    getApiMarvel();
+    event.preventDefault()
+  });
 
 function modeLD(){
     if (mode === 'dark'){
@@ -71,7 +84,7 @@ modeLightDark.addEventListener('click', ()=> {
 });
 
 function searchComics(titleComic){
-    getApiMarvel();
+    
 }
 
 function displayTotal(total){
@@ -79,9 +92,8 @@ function displayTotal(total){
     comicsResults.innerText = total + ' RESULTADOS';
 }
 
-const marvelList = document.getElementById('marvel-list');
 function styleCardComics(comics){
-    console.log(comics)
+    console.log('comics',comics)
     comics.forEach(comic => {
         const list = document.createElement('li');
         const image = document.createElement('img');
@@ -104,3 +116,41 @@ function styleCardComics(comics){
         marvelList.appendChild(list);
     });
 }
+
+function styleCardCharacters(comics){
+    console.log('chares',comics)
+    comics.forEach(comic => {
+        const list = document.createElement('li');
+        const image = document.createElement('img');
+        const name = document.createElement('h3');
+        // if (comic.images.length > 0){
+        //     console.log(comic.images)
+            image.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
+        // }
+        
+        name.innerText = comic.name;
+        list.style.width = '90%';
+        list.style.display = 'flex';
+        list.style.flexDirection = 'column';
+        list.style.gap = '10px';
+        image.style.width = '100%';
+        name.style.fontSize = '1.2rem';
+        name.style.color = '#607d8b';
+        list.appendChild(image);
+        list.appendChild(name);
+        marvelList.appendChild(list);
+    });
+}
+
+function styleCard(data, type){
+    if (type=='comic'){
+        styleCardComics(data)
+    }
+    else{
+        styleCardCharacters(data)
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    getApiMarvel();
+});
