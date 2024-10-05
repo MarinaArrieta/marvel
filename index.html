@@ -5,29 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marvel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/cd30d5437a.js" crossorigin="anonymous"></script>
 </head>
-<body class="flex flex-col gap-5 bg-slate-200">
-    <header class="h-48 overflow-hidden flex justify-center items-center">
+<body class="flex flex-col justify-between gap-5 bg-slate-200">
+    <header class="flex flex-col justify-center items-center bg-black">
+        <h1 class="text-5xl font-bold drop-shadow-lg text-white bg-red-700 p-3 italic font-bold font-mono">MARVEL</h1>
         <figure class="relative z-0 w-full">
-            <img class="w-full opacity-40" src="./assets/image/marvel1.jpg" alt="Marvel">
+            <img class="w-full min-h-80 opacity-40" src="./assets/image/marvel1.jpg" alt="Marvel">
         </figure>
-        <h1 class="text-6xl absolute z-10 font-bold drop-shadow-lg text-red-700">MARVEL</h1>
+        <div id="div-mode-button" class="div-icono w-full flex justify-center bg-slate-200">
+            <button id="mode-light-dark">
+                <i id="icon-mode" class="fa-solid fa-moon w-8 text-2xl text-slate-300 bg-red-700 rounded-md text-center mt-5"></i>
+            </button>
+        </div>
     </header>
-    <main class="flex justify-center items-center flex-col gap-5">
+    <main class="flex justify-center items-center flex-col gap-8">
         <form class="w-full px-5 xl:px-60">
-            <ul class="flex gap-4 flex-wrap justify-between">
-                <li class="flex flex-col gap-1.5 w-full xl:w-4/12">
-                    <label>Búsqueda</label>
-                    <input type="search" placeholder=" Ingresa tu búsqueda" class="w-full border-b-4 border-red-700">
+            <ul class="flex gap-9 flex-wrap justify-between">
+                <li class="flex flex-col gap-8 w-full xl:w-4/12">
+                    <label class="text-2xl text-red-700 font-bold">Búsqueda</label>
+                    <input id="search-input" type="search" placeholder=" Ingresa tu búsqueda" class="w-full border-b-4 border-red-700">
                 </li>
                 <li class="flex justify-between w-full flex items-end md:w-6/12 md:items-center xl:w-5/12 xl:gap-4 xl:items-end">
-                    <label for="" class="text-red-700 xl:w-1/12">Tipo</label>
-                    <select name="" id="tipo-comic-character" class="w-4/12 bg-inherit xl:w-4/12">
-                        <option value="comic">comic</option>
+                    <label for="" class="text-red-700 font-bold xl:w-1/12">Tipo</label>
+                    <select name="" id="tipo-comic-character" class="w-4/12 xl:w-4/12">
+                        <option value="comic">Comics</option>
                         <option value="character">Personajes</option>
                     </select>
-                    <label for="" class="text-red-700 xl:w-1/12">Orden</label>
-                    <select name="" id="order" class="w-4/12 bg-inherit xl:w-4/12">
+                    <label for="" class="font-bold text-red-700 xl:w-1/12">Orden</label>
+                    <select name="" id="order" class="w-4/12 xl:w-4/12">
                         <option value="az">A-Z</option>
                         <option value="za">Z-A</option>
                         <option value="new">Mas nuevos</option>
@@ -35,13 +41,13 @@
                     </select>
                 </li>
                 <li class="flex justify-end w-full md:w-2/12 xl:w-1/12 xl:items-end">
-                    <button class="bg-red-700 p-1.5 rounded-md w-28 xl:h-10">Buscar</button>
+                    <button class="font-bold text-white bg-red-700 p-1.5 rounded-md w-28 xl:h-10">Buscar</button>
                 </li>
             </ul>
         </form>
         <section class="flex flex-col items-center gap-5">
-            <h2 class="w-11/12 text-red-700">Resultados</h2>
-            <p id="comics-results" class="w-11/12 text-red-700"></p>
+            <h2 class="w-11/12 text-3xl text-red-700 font-bold">Resultados</h2>
+            <p id="comics-results" class="w-11/12 text-red-700 font-bold"></p>
             <ul id="marvel-list" class="flex flex-col items-center gap-14"></ul>
         </section>
     </main>
