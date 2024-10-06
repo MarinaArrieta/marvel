@@ -1,7 +1,7 @@
 const url = 'http://gateway.marvel.com/';
-const urlComics = 'v1/public/comics';
-const urlCharacters = 'v1/public/characters';
-const keyHash = 'ts=1&apikey=20ef376510097f50f89a7cf2b98cc1ce&hash=3c0bdb616f415c7a9a47908b7f5d4814';
+const urlComics = 'v1/public/comics?';
+const urlCharacters = 'v1/public/characters?';
+const keyHash = '&ts=1&apikey=20ef376510097f50f89a7cf2b98cc1ce&hash=3c0bdb616f415c7a9a47908b7f5d4814';
 const modeLightDark = document.getElementById('mode-light-dark');
 const divModeButton = document.getElementById('div-mode-button');
 let mode = 'dark';
@@ -10,6 +10,8 @@ let tipoComicCharacter = document.getElementById('tipo-comic-character');
 let searchInput = document.getElementById('search-input');
 const marvelList = document.getElementById('marvel-list');
 let order = document.getElementById('order');
+const newOption = document.getElementById('new-option');
+const oldOption = document.getElementById('old-option');
 
 async function getApiMarvel(){
     try{
@@ -33,10 +35,23 @@ async function getApiMarvel(){
         }
         
         if(orderBy == 'az' && inputType == 'comic'){
-            orderParam = '?orderBy=title&';
+            orderParam = 'orderBy=title';
         } 
         else if (orderBy == 'za' && inputType == 'comic'){
-            orderParam = '?orderBy=-title&';
+            orderParam = 'orderBy=-title';
+        }
+        else if (orderBy == 'new' && inputType == 'comic'){
+            // .toLocaleDataString
+            orderParam = 'orderBy=onsaleDate';
+        }
+        else if (orderBy == 'old' && inputType == 'comic'){
+            orderParam = 'orderBy=-onsaleDate';
+        }
+        else if (orderBy == 'az' && inputType == 'character'){
+            orderParam = 'orderBy=name';
+        }
+        else if (orderBy == 'za' && inputType == 'character'){
+            orderParam = 'orderBy=-name';
         }
 
         url_final = url + urlType + orderParam + filterTitle + keyHash ;
@@ -90,6 +105,16 @@ function modeLD(){
 modeLightDark.addEventListener('click', ()=> {
     modeLD();
 });
+
+tipoComicCharacter.addEventListener('input', ()=>{
+    if(tipoComicCharacter.value == 'comic'){
+        newOption.style.display = 'block';
+        oldOption.style.display = 'block';
+    }else{
+        newOption.style.display = 'none';
+        oldOption.style.display = 'none';
+    }
+})
 
 function searchComics(titleComic){
     
