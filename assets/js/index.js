@@ -42,10 +42,10 @@ async function getApiMarvel(){
         }
         else if (orderBy == 'new' && inputType == 'comic'){
             // .toLocaleDataString
-            orderParam = 'orderBy=onsaleDate';
+            orderParam = 'orderBy=focDate';
         }
         else if (orderBy == 'old' && inputType == 'comic'){
-            orderParam = 'orderBy=-onsaleDate';
+            orderParam = 'orderBy=-focDate';
         }
         else if (orderBy == 'az' && inputType == 'character'){
             orderParam = 'orderBy=name';
