@@ -12,6 +12,9 @@ const marvelList = document.getElementById('marvel-list');
 let order = document.getElementById('order');
 const newOption = document.getElementById('new-option');
 const oldOption = document.getElementById('old-option');
+const containerCards = document.getElementById('container-cards');
+const sectionCardComicsCharacters = document.getElementById('section-card-comics-characters');
+const searchButton = document.getElementById('search-button');
 
 async function getApiMarvel(){
     try{
@@ -114,11 +117,7 @@ tipoComicCharacter.addEventListener('input', ()=>{
         newOption.style.display = 'none';
         oldOption.style.display = 'none';
     }
-})
-
-function searchComics(titleComic){
-    
-}
+});
 
 function displayTotal(total){
     let comicsResults = document.getElementById('comics-results');
@@ -147,6 +146,15 @@ function styleCardComics(comics){
         list.appendChild(image);
         list.appendChild(tittle);
         marvelList.appendChild(list);
+
+        list.addEventListener('click', ()=>{
+            containerCards.style.display = 'none';
+            sectionCardComicsCharacters.style.display = 'flex';
+        });
+        searchButton.addEventListener('click', ()=>{
+            containerCards.style.display = 'flex';
+            sectionCardComicsCharacters.style.display = 'none';
+        });
     });
 }
 
@@ -160,19 +168,26 @@ function styleCardCharacters(comics){
         image.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
         
         name.innerText = comic.name;
-        list.style.width = '90%';
+        list.style.width = '200px';
+        list.style.height = '400px';
         list.style.display = 'flex';
         list.style.flexDirection = 'column';
         list.style.gap = '10px';
-        console.log(image)
         image.style.width = '100%';
-        // image.style.height = '300px';
-
         name.style.fontSize = '1.2rem';
         name.style.color = '#607d8b';
         list.appendChild(image);
         list.appendChild(name);
         marvelList.appendChild(list);
+
+        list.addEventListener('click', ()=>{
+            containerCards.style.display = 'none';
+            sectionCardComicsCharacters.style.display = 'flex';
+        });
+        searchButton.addEventListener('click', ()=>{
+            containerCards.style.display = 'flex';
+            sectionCardComicsCharacters.style.display = 'none';
+        });
     });
 }
 
