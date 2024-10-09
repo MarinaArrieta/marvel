@@ -15,6 +15,13 @@ const oldOption = document.getElementById('old-option');
 const containerCards = document.getElementById('container-cards');
 const sectionCardComicsCharacters = document.getElementById('section-card-comics-characters');
 const searchButton = document.getElementById('search-button');
+const individualImgCard = document.getElementById('individual-img-card');
+const publishedTitle = document.getElementById('published-title');
+const individualTitleCard = document.getElementById('individual-title-card');
+const published = document.getElementById('published');
+const screenwriterTitle = document.getElementById('screenwriter-title');
+const screenwriter = document.getElementById('screenwriter');
+const description = document.getElementById('description');
 
 async function getApiMarvel(){
     try{
@@ -44,7 +51,6 @@ async function getApiMarvel(){
             orderParam = 'orderBy=-title';
         }
         else if (orderBy == 'new' && inputType == 'comic'){
-            // .toLocaleDataString
             orderParam = 'orderBy=focDate';
         }
         else if (orderBy == 'old' && inputType == 'comic'){
@@ -67,6 +73,7 @@ async function getApiMarvel(){
         console.log(parsedMarvel);
         displayTotal(parsedMarvel.data.total);
         styleCard(parsedMarvel.data.results, inputType);
+        // cardIndividualComicsCharacters(parsedMarvel.data.results);
     }
     catch(error){
         console.error(error);
@@ -131,8 +138,7 @@ function styleCardComics(comics){
         const image = document.createElement('img');
         const tittle = document.createElement('h3');
 
-        image.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
-        
+        image.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;     
         tittle.innerText = comic.title;
         list.style.width = '200px';
         list.style.height = '400px';
@@ -150,6 +156,30 @@ function styleCardComics(comics){
         list.addEventListener('click', ()=>{
             containerCards.style.display = 'none';
             sectionCardComicsCharacters.style.display = 'flex';
+            publishedTitle.style.display = 'flex';
+            published.style.display = 'flex';
+            screenwriterTitle.style.display = 'flex';
+            screenwriter.style.display = 'flex';
+            individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
+            individualTitleCard.innerText = comic.title; 
+            let day = new Date(comic.dates[0].date);
+            if(day.length > 0){
+                published.innerText = day.getDate() + ' / ' + (day.getMonth()+1) + ' / ' + day.getFullYear();
+            }else{
+                published.innerText = 'No se encontró fecha de publicación';
+            }
+            result = comic.creators.items.filter((creator) => creator.role === 'writer').map((creator) => creator.name).join(', ');
+            if(result.length > 0){
+                screenwriter.innerText = result;
+            }else{
+                screenwriter.innerText = 'No se encontraron guionistas';
+            }
+
+            if (comic.description.length>0){
+                description.innerText = comic.description;
+            }else{
+                description.innerText = 'No se encontró descripción';
+            }
         });
         searchButton.addEventListener('click', ()=>{
             containerCards.style.display = 'flex';
@@ -158,16 +188,15 @@ function styleCardComics(comics){
     });
 }
 
-function styleCardCharacters(comics){
-    console.log('chares',comics)
-    comics.forEach(comic => {
+function styleCardCharacters(characters){
+    console.log('chares',characters)
+    characters.forEach(character => {
         const list = document.createElement('li');
         const image = document.createElement('img');
         const name = document.createElement('h3');
 
-        image.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
-        
-        name.innerText = comic.name;
+        image.src = character.thumbnail.path + '.' + character.thumbnail.extension;
+        name.innerText = character.name;
         list.style.width = '200px';
         list.style.height = '400px';
         list.style.display = 'flex';
@@ -183,6 +212,13 @@ function styleCardCharacters(comics){
         list.addEventListener('click', ()=>{
             containerCards.style.display = 'none';
             sectionCardComicsCharacters.style.display = 'flex';
+            publishedTitle.style.display = 'none';
+            published.style.display = 'none';
+            screenwriterTitle.style.display = 'none';
+            screenwriter.style.display = 'none';
+            individualImgCard.src = character.thumbnail.path + '.' + character.thumbnail.extension;
+            individualTitleCard.innerText = character.name;
+            description.innerText = character.description;
         });
         searchButton.addEventListener('click', ()=>{
             containerCards.style.display = 'flex';
@@ -192,11 +228,11 @@ function styleCardCharacters(comics){
 }
 
 function styleCard(data, type){
-    if (type=='comic'){
-        styleCardComics(data)
+    if (type =='comic'){
+        styleCardComics(data);
     }
     else{
-        styleCardCharacters(data)
+        styleCardCharacters(data);
     }
 }
 
