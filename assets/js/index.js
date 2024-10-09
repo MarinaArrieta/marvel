@@ -162,9 +162,9 @@ function styleCardComics(comics){
             screenwriter.style.display = 'flex';
             individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
             individualTitleCard.innerText = comic.title; 
-            let day = new Date(comic.dates[0].date);
-            if(day.length > 0){
-                published.innerText = day.getDate() + ' / ' + (day.getMonth()+1) + ' / ' + day.getFullYear();
+            let dia = new Date(comic.dates[0].date);
+            if(dia.toDateString().length > 0){
+                published.innerText = dia.getDate() + ' / ' + (dia.getMonth()+1) + ' / ' + dia.getFullYear();
             }else{
                 published.innerText = 'No se encontró fecha de publicación';
             }
