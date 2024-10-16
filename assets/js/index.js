@@ -87,15 +87,14 @@ document.getElementById("form-search").addEventListener("submit", function(event
     event.preventDefault()
 });
 
-// theme
+// Theme
 function modeLD(){
     if (mode === 'dark'){
         document.body.style.background = '#181818';
         iconMode.className = "fa-solid fa-sun";
         iconMode.style.fontSize = '1.5rem';
-        iconMode.style.textAlign = 'center';
+        iconMode.style.boxShadow = '0px 0px 3px 4px red';
         iconMode.style.lineHeight = '2rem';
-        iconMode.style.background = '#b91c1c';
         iconMode.style.color = '#cbd5e1';
         iconMode.style.width = '2rem';
         iconMode.style.borderRadius = '0.375rem';
@@ -105,9 +104,8 @@ function modeLD(){
         document.body.style.background = '#e2e8f0';
         iconMode.className = "fa-solid fa-moon";
         iconMode.style.fontSize = '1.5rem';
-        iconMode.style.textAlign = 'center';
+        iconMode.style.boxShadow = '0px 0px 3px 4px red';
         iconMode.style.lineHeight = '2rem';
-        iconMode.style.background = '#b91c1c';
         iconMode.style.color = '#cbd5e1';
         iconMode.style.width = '2rem';
         iconMode.style.borderRadius = '0.375rem';
