@@ -1,0 +1,31 @@
+section ul li{
+    border: 1px #ffffff;
+    padding: 5px;
+    background: #6495ed;
+}
+
+section ul li figure{
+    width: 100%;
+}
+
+section ul li figure img{
+    width: 250px;
+}
+
+section ul li p{
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: -2px 2px 2px #00003c;
+}
+
+@media screen and (min-width: 758px) {
+    section ul li figure img {
+        width: 190px;
+    }
+}
+
+@media screen and (min-width: 758px) {
+    section ul li figure img {
+        width: 188px;
+    }
+}

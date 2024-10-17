@@ -1,7 +1,8 @@
 const url = 'http://gateway.marvel.com/';
 const urlComics = 'v1/public/comics';
 const urlCharacters = 'v1/public/characters';
-const keyHash = '?ts=1&apikey=20ef376510097f50f89a7cf2b98cc1ce&hash=3c0bdb616f415c7a9a47908b7f5d4814';
+// const keyHash = '?ts=1&apikey=20ef376510097f50f89a7cf2b98cc1ce&hash=3c0bdb616f415c7a9a47908b7f5d4814&hash=';
+keyHash = '?ts=wolverine&apikey=0099ad43a2ad46ed152e880db181665f&hash=6983ba77caa15f7496e6989c74b39ba5';
 const modeLightDark = document.getElementById('mode-light-dark');
 const divModeButton = document.getElementById('div-mode-button');
 let mode = 'dark';
@@ -24,6 +25,9 @@ const screenwriter = document.getElementById('screenwriter');
 const description = document.getElementById('description');
 const matchList = document.getElementById('match-list');
 let matchTotal = document.getElementById('match-total');
+let comicsResults = document.getElementById('comics-results');
+const titleIndivualListCard = document.getElementById('title-indivual-list-card');
+// const listTheme = document.getElementById('lisTheme');
 
 async function getApiMarvel(){
     try{
@@ -45,25 +49,13 @@ async function getApiMarvel(){
         if (inputSearch){
             filterTitle = search_param + inputSearch;   
         }
-        
-        if(orderBy == 'az' && inputType == 'comic'){
-            orderParam = '&orderBy=title';
-        } 
-        else if (orderBy == 'za' && inputType == 'comic'){
-            orderParam = '&orderBy=-title';
-        }
-        else if (orderBy == 'new' && inputType == 'comic'){
-            orderParam = '&orderBy=focDate';
-        }
-        else if (orderBy == 'old' && inputType == 'comic'){
-            orderParam = '&orderBy=-focDate';
-        }
-        else if (orderBy == 'az' && inputType == 'character'){
-            orderParam = '&orderBy=name';
-        }
-        else if (orderBy == 'za' && inputType == 'character'){
-            orderParam = '&orderBy=-name';
-        }
+
+        if(orderBy == 'az' && inputType == 'comic') {orderParam = '&orderBy=title';} 
+        else if (orderBy == 'za' && inputType == 'comic') {orderParam = '&orderBy=-title';}
+        else if (orderBy == 'new' && inputType == 'comic') {orderParam = '&orderBy=focDate';}
+        else if (orderBy == 'old' && inputType == 'comic') {orderParam = '&orderBy=-focDate';}
+        else if (orderBy == 'az' && inputType == 'character') {orderParam = '&orderBy=name';}
+        else if (orderBy == 'za' && inputType == 'character') {orderParam = '&orderBy=-name';}
 
         url_final = url + urlType + keyHash + orderParam + filterTitle;
 
@@ -74,8 +66,8 @@ async function getApiMarvel(){
         console.log(response)
         const parsedMarvel = await response.json();
         console.log(parsedMarvel);
-        // displayTotal(parsedMarvel.data.total);
         styleCard(parsedMarvel.data.results, inputType);
+        // total(parsedMarvel.data.total);
     }
     catch(error){
         console.error(error);
@@ -87,54 +79,36 @@ document.getElementById("form-search").addEventListener("submit", function(event
     event.preventDefault()
 });
 
-// Theme
-function modeLD(){
-    if (mode === 'dark'){
-        document.body.style.background = '#181818';
-        iconMode.className = "fa-solid fa-sun";
-        iconMode.style.fontSize = '1.5rem';
-        iconMode.style.boxShadow = '0px 0px 3px 4px red';
-        iconMode.style.lineHeight = '2rem';
-        iconMode.style.color = '#cbd5e1';
-        iconMode.style.width = '2rem';
-        iconMode.style.borderRadius = '0.375rem';
-        mode = 'light';
-    } 
-    else{
-        document.body.style.background = '#e2e8f0';
-        iconMode.className = "fa-solid fa-moon";
-        iconMode.style.fontSize = '1.5rem';
-        iconMode.style.boxShadow = '0px 0px 3px 4px red';
-        iconMode.style.lineHeight = '2rem';
-        iconMode.style.color = '#cbd5e1';
-        iconMode.style.width = '2rem';
-        iconMode.style.borderRadius = '0.375rem';
-        mode = 'dark';
+tipoComicCharacter.addEventListener('input', ()=>{
+    if(tipoComicCharacter.value == 'character'){
+        newOption.style.display = 'none';
+        oldOption.style.display = 'none';
+    } else{
+        newOption.style.display = 'flex';
+        oldOption.style.display = 'flex';
     }
-}
-
-modeLightDark.addEventListener('click', ()=> {
-    modeLD();
-});
-
-// function displayTotal(total){
-//     let comicsResults = document.getElementById('comics-results');
-//     comicsResults.innerText = total + ' RESULTADOS';
-// }
+})
 
 function styleCardComics(comics) {
+    console.log(comics)
+    // comicsResults.innerText = comics.total;
     comics.forEach(comic => {
         // Crear elementos
         const list = createElement('li', {
-            style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
+            style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff0000 0%, #1a1a1b 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
         });
-        const figure = document.createElement('figure');
-        const image = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '300px' } });
-        const title = createElement('h3', { innerText: comic.title, style: { fontSize: '1.2rem', color: '#607d8b' } });
+        // list.setAttribute("id", "listTheme");
+        // const figureComic = document.createElement('figure', {style: {width: '250px',
+        //     height: '416px'}});
+        const figureComic = document.createElement('figure');
+        figureComic.style.width = '250px';
+        figureComic.style.height = '400px';
+        const image = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
+        const title = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
 
         // Añadir elementos a la lista
-        figure.appendChild(image);
-        list.append(figure);
+        figureComic.appendChild(image);
+        list.append(figureComic);
         list.append(title);
         marvelList.append(list);
 
@@ -165,6 +139,7 @@ function handleComicClick(comic) {
 
 // Configurar detalles del comic
 function setComicDetails(comic) {
+    // titleIndivualListCard.innerText = 'Personajes';
     individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
     individualTitleCard.innerText = comic.title;
     publishedTitle.style.display = 'flex';
@@ -260,8 +235,7 @@ function fetchComicDetails(elem) {
 }
 
 function displayComics(comics) {
-    matchList.innerHTML = ""; // Limpiar lista antes de agregar nuevos elementos
-
+    matchList.innerHTML = "";
     comics.forEach(comic => {
         const list = createComicListItem(comic);
         matchList.appendChild(list);
@@ -306,10 +280,27 @@ function createComicListItem(comic) {
 }
 
 function styleCardCharacters(characters) {
-    console.log('characters', characters);
+    // console.log('characters', characters);
+    // comicsResults.innerText = characters.total;
     characters.forEach(character => {
-        const list = createCharacterListItem(character);
-        marvelList.appendChild(list);
+        // const list = createCharacterListItem(character);
+        // marvelList.appendChild(list);
+        // Crear elementos
+        const list = createElement('li', {
+            style: {  width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff0000 0%, #1a1a1b 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
+        });
+        // const figureCaracter = document.createElement('figure', {style: {width: '250px', height: '416px'}});
+        const figureCaracter = document.createElement('figure');
+        figureCaracter.style.width = '250px';
+        figureCaracter.style.height = '400px';
+        const image = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
+        const name = createElement('h3', { innerText: character.name, style: {  height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
+
+        // Añadir elementos a la lista
+        figureCaracter.appendChild(image);
+        list.append(figureCaracter);
+        list.append(name);
+        marvelList.append(list);
 
         list.addEventListener('click', () => {
             matchList.innerHTML = "";
@@ -318,29 +309,62 @@ function styleCardCharacters(characters) {
     });
 }
 
-function createCharacterListItem(character) {
-    const list = document.createElement('li');
-    const image = document.createElement('img');
-    const name = document.createElement('h3');
+// function createCharacterListItem(character) {
+    // const list = document.createElement('li');
+    // const image = document.createElement('img');
+    // const name = document.createElement('h3');
 
-    image.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
-    name.innerText = character.name;
+    // image.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
+    // name.innerText = character.name;
 
-    list.style.width = '200px';
-    list.style.height = '400px';
-    list.style.display = 'flex';
-    list.style.flexDirection = 'column';
-    list.style.gap = '10px';
+    // list.style.width = '200px';
+    // list.style.height = '400px';
+    // list.style.display = 'flex';
+    // list.style.flexDirection = 'column';
+    // list.style.gap = '10px';
 
-    image.style.width = '100%';
-    name.style.fontSize = '1.2rem';
-    name.style.color = '#607d8b';
+    // image.style.width = '100%';
+    // name.style.fontSize = '1.2rem';
+    // name.style.color = '#607d8b';
 
-    list.appendChild(image);
-    list.appendChild(name);
+    // list.appendChild(image);
+    // list.appendChild(name);
 
-    return list;
+    // return list;
+// }
+
+// Theme
+function modeLD(){
+    if (mode === 'dark'){
+        document.body.style.background = '#181818';
+        iconMode.className = "fa-solid fa-sun";
+        iconMode.style.fontSize = '1.5rem';
+        iconMode.style.lineHeight = '2rem';
+        iconMode.style.color = '#fbbf24';
+        iconMode.style.width = '2rem';
+        iconMode.style.border = '1px solid #fbbf24';
+        iconMode.style.borderRadius = '0.25rem';
+        // iconMode.onmouseover.style.background = 'rgb(94 234 212)';
+        // lisTheme.style.background = 'linear-gradient(120deg, rgb(255, 0, 0) 0%, rgb(26, 26, 27) 90%)';
+        mode = 'light';
+    } 
+    else{
+        document.body.style.background = '#fff7ed';
+        iconMode.className = "fa-solid fa-moon";
+        iconMode.style.fontSize = '1.5rem';
+        iconMode.style.lineHeight = '2rem';
+        iconMode.style.color = '#22d3ee';
+        iconMode.style.width = '2rem';
+        iconMode.style.border = '1px solid #22d3ee';
+        iconMode.style.borderRadius = '0.25rem';
+        // lisTheme.style.background = 'linear-gradient(120deg, rgb(248 155 155) 0%, rgb(80 80 83) 90%';
+        mode = 'dark';
+    }
 }
+
+modeLightDark.addEventListener('click', ()=> {
+    modeLD();
+});
 
 searchButton.addEventListener('click', ()=>{
     containerCards.style.display = 'flex';
