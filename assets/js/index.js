@@ -139,12 +139,12 @@ function handleComicClick(comic) {
     // console.log(comic.title)
     containerCards.style.display = 'none';
     sectionCardComicsCharacters.style.display = 'flex';
-    setComicDetails(comic);
+    bigCardComic(comic);
     fetchCharacters(comic);
 }
 
 // Configurar detalles del comic
-function setComicDetails(comic) {
+function bigCardComic(comic) {
     // titleIndivualListCard.innerText = 'Personajes';
     individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
     individualTitleCard.innerText = comic.title;
@@ -250,7 +250,8 @@ function big_card_char(character) {
 
     individualImgCard.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
     individualTitleCard.innerText = character.name;
-    description.innerText = character.description;
+    // description.innerText = character.description;
+    description.innerText = character.description || 'No se encontró descripción';
 
     Promise.all(character.comics.items.map(fetchComicDetails))
         .then(comics => {
