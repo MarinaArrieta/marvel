@@ -66,6 +66,7 @@ async function getApiMarvel(){
         console.log(response)
         const parsedMarvel = await response.json();
         console.log(parsedMarvel);
+        displayTotal(parsedMarvel.data.total);
         styleCard(parsedMarvel.data.results, inputType);
         // total(parsedMarvel.data.total);
     }
@@ -87,7 +88,12 @@ tipoComicCharacter.addEventListener('input', ()=>{
         newOption.style.display = 'flex';
         oldOption.style.display = 'flex';
     }
-})
+});
+
+function displayTotal(total){
+    let comicsResults = document.getElementById('comics-results');
+    comicsResults.innerText = total + ' RESULTADOS';
+}
 
 function styleCardComics(comics) {
     console.log(comics)
@@ -95,7 +101,7 @@ function styleCardComics(comics) {
     comics.forEach(comic => {
         // Crear elementos
         const list = createElement('li', {
-            style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff0000 0%, #1a1a1b 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
+            style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
         });
         // list.setAttribute("id", "listTheme");
         // const figureComic = document.createElement('figure', {style: {width: '250px',
@@ -287,7 +293,7 @@ function styleCardCharacters(characters) {
         // marvelList.appendChild(list);
         // Crear elementos
         const list = createElement('li', {
-            style: {  width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff0000 0%, #1a1a1b 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
+            style: {  width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
         });
         // const figureCaracter = document.createElement('figure', {style: {width: '250px', height: '416px'}});
         const figureCaracter = document.createElement('figure');
