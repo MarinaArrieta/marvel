@@ -27,7 +27,6 @@ const matchList = document.getElementById('match-list');
 let matchTotal = document.getElementById('match-total');
 let comicsResults = document.getElementById('comics-results');
 const titleIndivualListCard = document.getElementById('title-indivual-list-card');
-// const listTheme = document.getElementById('lisTheme');
 
 async function getApiMarvel(){
     try{
@@ -68,7 +67,6 @@ async function getApiMarvel(){
         console.log(parsedMarvel);
         displayTotal(parsedMarvel.data.total);
         styleCard(parsedMarvel.data.results, inputType);
-        // total(parsedMarvel.data.total);
     }
     catch(error){
         console.error(error);
@@ -97,28 +95,22 @@ function displayTotal(total){
 
 function styleCardComics(comics) {
     console.log(comics)
-    // comicsResults.innerText = comics.total;
     comics.forEach(comic => {
         // Crear elementos
         const list = createElement('li', {
             style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
         });
-        // list.setAttribute("id", "listTheme");
-        // const figureComic = document.createElement('figure', {style: {width: '250px',
-        //     height: '416px'}});
         const figureComic = document.createElement('figure');
         figureComic.style.width = '250px';
         figureComic.style.height = '400px';
         const image = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
         const title = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
 
-        // Añadir elementos a la lista
         figureComic.appendChild(image);
         list.append(figureComic);
         list.append(title);
         marvelList.append(list);
 
-        // Evento para comic individual
         list.addEventListener('click', () => {
             matchList.innerHTML = ""
             handleComicClick(comic)});
@@ -136,7 +128,6 @@ function createElement(tag, { innerText, src, style } = {}) {
 
 // Manejo del click en el comic
 function handleComicClick(comic) {
-    // console.log(comic.title)
     containerCards.style.display = 'none';
     sectionCardComicsCharacters.style.display = 'flex';
     bigCardComic(comic);
@@ -145,7 +136,6 @@ function handleComicClick(comic) {
 
 // Configurar detalles del comic
 function bigCardComic(comic) {
-    // titleIndivualListCard.innerText = 'Personajes';
     individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
     individualTitleCard.innerText = comic.title;
     publishedTitle.style.display = 'flex';
@@ -164,32 +154,12 @@ function bigCardComic(comic) {
 }
 
 // Fetch y mostrar personajes
-// function setCharacterDetails(character) {
-//     // card small g
-//     const list = createElement('li', {
-//         style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
-//     });
-//     const matchImage = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}` });
-//     const matchNameP = createElement('p', { innerText: character.name, style: { fontSize: '1.2rem', color: '#607d8b' } });
-
-//     list.append(createElement('figure').appendChild(matchImage), matchNameP);
-//     matchList.append(list);
-
-//     list.addEventListener('click', ()=> {
-//         matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
-//         matchList.innerHTML = "";
-//         big_card_char(character);
-//     });
-// }
-
-// Fetch y mostrar personajes
 function fetchCharacters(character) {
     character.characters.items.forEach(elem => {
         fetch(`${elem.resourceURI}${keyHash}`)
             .then(res => res.json())
             .then(data => {
                 const character = data.data.results[0];
-                // setCharacterDetails(character);
                 const list = createElement('li', {
                     style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
                 });
@@ -236,21 +206,17 @@ function fetchComics(comic) {
             });
     });
 }
-// ------------------------------------------------------------------------
 
 function big_card_char(character) {
-    // Mostrar la tarjeta grande
     containerCards.style.display = 'none';
     sectionCardComicsCharacters.style.display = 'flex';
     publishedTitle.style.display = 'none';
     published.style.display = 'none';
     screenwriterTitle.style.display = 'none';
     screenwriter.style.display = 'none';
-    // hideAdditionalDetails();
 
     individualImgCard.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
     individualTitleCard.innerText = character.name;
-    // description.innerText = character.description;
     description.innerText = character.description || 'No se encontró descripción';
 
     Promise.all(character.comics.items.map(fetchComicDetails))
@@ -275,7 +241,6 @@ function displayComics(comics) {
 }
 
 function createComicListItem(comic) {
-    // const list = document.createElement('li');
     const list = createElement('li', {
         style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
     });
@@ -283,26 +248,11 @@ function createComicListItem(comic) {
     matchFigure.style.width = '250px';
     matchFigure.style.height = '400px';
     const matchImage = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
-    // const matchNameP = document.createElement('p');
     const matchNameP = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
-
-    // matchImage.src = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
-    // matchNameP.innerText = comic.title;
-
-    // list.style.width = '200px';
-    // list.style.height = '400px';
-    // list.style.display = 'flex';
-    // list.style.flexDirection = 'column';
-    // list.style.gap = '10px';
-
-    // matchImage.style.width = '100%';
-    // matchNameP.style.fontSize = '1.2rem';
-    // matchNameP.style.color = '#607d8b';
 
     matchFigure.appendChild(matchImage);
     list.appendChild(matchFigure);
     list.appendChild(matchNameP);
-    // list.appendChild(matchNameP);
 
     list.addEventListener('click', () => {
         matchList.innerHTML = "";
@@ -313,23 +263,16 @@ function createComicListItem(comic) {
 }
 
 function styleCardCharacters(characters) {
-    // console.log('characters', characters);
-    // comicsResults.innerText = characters.total;
     characters.forEach(character => {
-        // const list = createCharacterListItem(character);
-        // marvelList.appendChild(list);
-        // Crear elementos
         const list = createElement('li', {
             style: {  width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
         });
-        // const figureCaracter = document.createElement('figure', {style: {width: '250px', height: '416px'}});
         const figureCaracter = document.createElement('figure');
         figureCaracter.style.width = '250px';
         figureCaracter.style.height = '400px';
         const image = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
         const name = createElement('h3', { innerText: character.name, style: {  height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
         
-        // Añadir elementos a la lista
         figureCaracter.appendChild(image);
         list.append(figureCaracter);
         list.append(name);
@@ -342,30 +285,6 @@ function styleCardCharacters(characters) {
     });
 }
 
-// function createCharacterListItem(character) {
-    // const list = document.createElement('li');
-    // const image = document.createElement('img');
-    // const name = document.createElement('h3');
-
-    // image.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
-    // name.innerText = character.name;
-
-    // list.style.width = '200px';
-    // list.style.height = '400px';
-    // list.style.display = 'flex';
-    // list.style.flexDirection = 'column';
-    // list.style.gap = '10px';
-
-    // image.style.width = '100%';
-    // name.style.fontSize = '1.2rem';
-    // name.style.color = '#607d8b';
-
-    // list.appendChild(image);
-    // list.appendChild(name);
-
-    // return list;
-// }
-
 // Theme
 function modeLD(){
     if (mode === 'dark'){
@@ -377,8 +296,6 @@ function modeLD(){
         iconMode.style.width = '2rem';
         iconMode.style.border = '1px solid #fbbf24';
         iconMode.style.borderRadius = '0.25rem';
-        // iconMode.onmouseover.style.background = 'rgb(94 234 212)';
-        // lisTheme.style.background = 'linear-gradient(120deg, rgb(255, 0, 0) 0%, rgb(26, 26, 27) 90%)';
         mode = 'light';
     } 
     else{
@@ -390,7 +307,6 @@ function modeLD(){
         iconMode.style.width = '2rem';
         iconMode.style.border = '1px solid #22d3ee';
         iconMode.style.borderRadius = '0.25rem';
-        // lisTheme.style.background = 'linear-gradient(120deg, rgb(248 155 155) 0%, rgb(80 80 83) 90%';
         mode = 'dark';
     }
 }
