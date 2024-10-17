@@ -28,14 +28,14 @@
                         <label class="text-2xl text-red-700 font-bold">Búsqueda</label>
                         <input id="search-input" type="search" placeholder=" Ingresa tu búsqueda" class="w-full border-b-4 border-red-700 hover:text-white hover:bg-red-300">
                     </li>
-                    <li class="flex justify-between w-full flex items-end md:w-6/12 md:items-center xl:w-5/12 xl:gap-4 xl:items-end">
+                    <li class="flex justify-between w-full items-center gap-2.5 md:w-6/12 md:items-center xl:w-5/12 xl:gap-4 xl:items-end">
                         <label for="" class="text-red-700 font-bold xl:w-1/12">Tipo</label>
-                        <select name="" id="tipo-comic-character" class="w-4/12 hover:bg-red-300 xl:w-4/12">
+                        <select name="" id="tipo-comic-character" class="w-4/12 border-b-4 border-red-700 hover:bg-red-300 xl:w-4/12">
                             <option value="comic" selected>Comics</option>
                             <option value="character">Personajes</option>
                         </select>
                         <label for="" class="font-bold text-red-700 xl:w-1/12">Orden</label>
-                        <select name="" id="order" class="w-4/12 hover:bg-red-300 xl:w-4/12">
+                        <select name="" id="order" class="w-4/12 border-b-4 border-red-700 hover:bg-red-300 xl:w-4/12">
                             <option value="az">A-Z</option>
                             <option value="za">Z-A</option>
                             <option id="new-option" value="new">Mas nuevos</option>
@@ -50,7 +50,7 @@
             <section id="container-cards" class="flex flex-col items-center gap-5">
                 <h2 class="w-full text-left text-3xl text-red-700 font-bold">Resultados</h2>
                 <p id="comics-results" class="w-full text-left text-red-700 font-bold"></p>
-                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5"></ul>
+                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:justify-between"></ul>
             </section>
             <section id="section-card-comics-characters" class="hidden flex-col items-center gap-5">
                 <article class="flex flex-col gap-7">
