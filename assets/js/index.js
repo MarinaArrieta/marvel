@@ -150,6 +150,7 @@ function bigCardComic(comic) {
     screenwriter.innerText = writers;
 
     description.innerText = comic.description || 'No se encontró descripción';
+    titleIndivualListCard.innerText = 'Personajes';
     matchTotal.innerText = comic.characters.items.length > 0 ? `${comic.characters.items.length} RESULTADOS` : 'NO SE ENCONTRARON';
 }
 
@@ -168,7 +169,6 @@ function fetchCharacters(character) {
                 matchFigure.style.height = '400px';
                 const matchImage = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
                 const matchNameP = createElement('p', { innerText: character.name, style: { height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
-                titleIndivualListCard.innerText = 'Personajes';
                 matchFigure.appendChild(matchImage);
                 list.append(matchFigure);
                 list.append(matchNameP);
@@ -176,6 +176,7 @@ function fetchCharacters(character) {
             
                 list.addEventListener('click', ()=> {
                     matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
+                    titleIndivualListCard.innerText = 'Comics';
                     matchList.innerHTML = "";
                     big_card_char(character);
                 });
@@ -218,6 +219,7 @@ function big_card_char(character) {
     individualImgCard.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
     individualTitleCard.innerText = character.name;
     description.innerText = character.description || 'No se encontró descripción';
+    titleIndivualListCard.innerText = 'Comics';
 
     Promise.all(character.comics.items.map(fetchComicDetails))
         .then(comics => {
@@ -255,6 +257,7 @@ function createComicListItem(comic) {
     list.appendChild(matchNameP);
 
     list.addEventListener('click', () => {
+        titleIndivualListCard.innerText = 'Personajes';
         matchList.innerHTML = "";
         handleComicClick(comic);
     });
@@ -323,9 +326,11 @@ searchButton.addEventListener('click', ()=>{
 function styleCard(data, type){
     if (type =='comic'){
         styleCardComics(data);
+        // titleIndivualListCard.innerText = 'Personajes';
     }
     else{
         styleCardCharacters(data);
+        // titleIndivualListCard.innerText = 'Comics';
     }
 }
 
