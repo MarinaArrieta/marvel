@@ -21,7 +21,7 @@
         </div>
     </header>
     <main class="flex justify-center items-center flex-col gap-8">
-        <div class="w-10/12 flex flex-col gap-12">
+        <div class="w-10/12 flex flex-col gap-12 xl:w-2/3">
             <form id="form-search" class="w-full">
                 <ul class="flex gap-9 flex-wrap justify-between">
                     <li class="flex flex-col gap-8 w-full xl:w-4/12">
@@ -50,28 +50,28 @@
             <section id="container-cards" class="flex flex-col items-center gap-5">
                 <h2 class="w-full text-left text-3xl text-red-700 font-bold">Resultados</h2>
                 <p id="comics-results" class="w-full text-left text-red-700 font-bold"></p>
-                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:justify-between"></ul>
+                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16"></ul>
             </section>
             <section id="section-card-comics-characters" class="hidden flex-col items-center gap-5">
                 <article class="flex flex-col gap-7">
-                    <div class="flex flex-col gap-6 md:flex-row md:justify-center">
-                        <figure class="md:w-full lg:w-96 overflow-hidden">
-                            <img id="individual-img-card" class="w-full" src="./assets/image/logo-marvel.jpg" alt="">
+                    <div class="flex flex-col gap-6 md:flex-row md:justify-between md:h-5/6">
+                        <figure class="md:w-6/12 lg:w-96 overflow-hidden">
+                            <img id="individual-img-card" class="w-full md:h-full" src="./assets/image/logo-marvel.jpg" alt="">
                         </figure>
-                        <article class="flex flex-col gap-2 md:justify-between lg:w-2/4">
-                            <h2 id="individual-title-card" class="w-11/12 text-3xl text-red-700 font-bold"></h2>
-                            <h3 id="published-title" class="w-11/12 text-2xl italic text-red-700">Publicado</h3>
-                            <p id="published" class="w-11/12 text-red-700"></p>
-                            <h3 id="screenwriter-title" class="w-11/12 text-2xl italic text-red-700">Guionistas</h3>
-                            <p id="screenwriter" class="w-11/12 text-red-700"></p>
-                            <h3 class="w-11/12 text-2xl italic text-red-700">Descripción</h3>
-                            <p id="description" class="w-11/12 text-red-700"></p>
+                        <article class="flex flex-col gap-3 md:w-6/12 lg:w-2/4 lg:justify-start">
+                            <h2 id="individual-title-card" class="text-3xl text-red-700 font-bold"></h2>
+                            <h3 id="published-title" class="text-2xl italic text-red-700">Publicado</h3>
+                            <p id="published" class="text-red-700"></p>
+                            <h3 id="screenwriter-title" class="text-2xl italic text-red-700">Guionistas</h3>
+                            <p id="screenwriter" class="text-red-700"></p>
+                            <h3 class="text-2xl italic text-red-700">Descripción</h3>
+                            <p id="description" class="text-red-700"></p>
                         </article>
                     </div>
                     <div class="flex flex-col gap-6 md:justify-center">
-                        <h3 id="title-indivual-list-card" class="w-11/12 text-2xl text-red-700">Hola</h3>
-                        <p id="match-total"></p>
-                        <ul id="match-list" class="flex flex-wrap justify-center items-center gap-5"></ul>
+                        <h3 id="title-indivual-list-card" class="text-2xl text-red-700"></h3>
+                        <p id="match-total" class="text-red-700"></p>
+                        <ul id="match-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16"></ul>
                     </div>
                 </article>
             </section>

@@ -110,7 +110,7 @@ function styleCardComics(comics) {
         figureComic.style.width = '250px';
         figureComic.style.height = '400px';
         const image = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
-        const title = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
+        const title = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
 
         // Añadir elementos a la lista
         figureComic.appendChild(image);
@@ -164,31 +164,51 @@ function setComicDetails(comic) {
 }
 
 // Fetch y mostrar personajes
-function setCharacterDetails(character) {
-    // card small g
-    const list = createElement('li', {
-        style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
-    });
-    const matchImage = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}` });
-    const matchNameP = createElement('p', { innerText: character.name, style: { fontSize: '1.2rem', color: '#607d8b' } });
+// function setCharacterDetails(character) {
+//     // card small g
+//     const list = createElement('li', {
+//         style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
+//     });
+//     const matchImage = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}` });
+//     const matchNameP = createElement('p', { innerText: character.name, style: { fontSize: '1.2rem', color: '#607d8b' } });
 
-    list.append(createElement('figure').appendChild(matchImage), matchNameP);
-    matchList.append(list);
+//     list.append(createElement('figure').appendChild(matchImage), matchNameP);
+//     matchList.append(list);
 
-    list.addEventListener('click', ()=> {
-        matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
-        matchList.innerHTML = "";
-        big_card_char(character);
-    });
-}
+//     list.addEventListener('click', ()=> {
+//         matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
+//         matchList.innerHTML = "";
+//         big_card_char(character);
+//     });
+// }
 
-function fetchCharacters(comic) {
-    comic.characters.items.forEach(elem => {
+// Fetch y mostrar personajes
+function fetchCharacters(character) {
+    character.characters.items.forEach(elem => {
         fetch(`${elem.resourceURI}${keyHash}`)
             .then(res => res.json())
             .then(data => {
                 const character = data.data.results[0];
-                setCharacterDetails(character);
+                // setCharacterDetails(character);
+                const list = createElement('li', {
+                    style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
+                });
+                const matchFigure = createElement('figure');
+                matchFigure.style.width = '250px';
+                matchFigure.style.height = '400px';
+                const matchImage = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
+                const matchNameP = createElement('p', { innerText: character.name, style: { height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
+                titleIndivualListCard.innerText = 'Personajes';
+                matchFigure.appendChild(matchImage);
+                list.append(matchFigure);
+                list.append(matchNameP);
+                matchList.append(list);
+            
+                list.addEventListener('click', ()=> {
+                    matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
+                    matchList.innerHTML = "";
+                    big_card_char(character);
+                });
             });
     });
 }
@@ -201,12 +221,17 @@ function fetchComics(comic) {
             .then(data => {
                 const comics = data.data.results[0];
                 const list = createElement('li', {
-                    style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
+                    style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
                 });
-                const matchImage = createElement('img', { src: `${comics.thumbnail.path}.${comics.thumbnail.extension}` });
-                const matchTitleP = createElement('p', { innerText: comics.title, style: { fontSize: '1.2rem', color: '#607d8b' } });
-
-                list.append(createElement('figure').appendChild(matchImage), matchTitleP);
+                const figureCaracter = document.createElement('figure');
+                matchFigure.style.width = '250px';
+                matchFigure.style.height = '400px';
+                const matchImage = createElement('img', { src: `${comics.thumbnail.path}.${comics.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
+                const matchTitleP = createElement('p', { innerText: comics.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
+                titleIndivualListCard.innerText = 'Comics';
+                figureCaracter.appendChild(matchImage);
+                list.append(figureCaracter);
+                list.append(matchTitleP);
                 matchList.append(list);
             });
     });
@@ -251,13 +276,14 @@ function displayComics(comics) {
 function createComicListItem(comic) {
     // const list = document.createElement('li');
     const list = createElement('li', {
-        style: { width: '200px', height: '400px', display: 'flex', flexDirection: 'column', gap: '10px' }
+        style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
     });
     const matchFigure = document.createElement('figure');
-    // const matchImage = document.createElement('img');
-    const matchImage = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '300px' } });
+    matchFigure.style.width = '250px';
+    matchFigure.style.height = '400px';
+    const matchImage = createElement('img', { src: `${comic.thumbnail.path}.${comic.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
     // const matchNameP = document.createElement('p');
-    const matchNameP = createElement('h3', { innerText: comic.title, style: { fontSize: '1.2rem', color: '#607d8b' } });
+    const matchNameP = createElement('h3', { innerText: comic.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
 
     // matchImage.src = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
     // matchNameP.innerText = comic.title;
@@ -300,8 +326,8 @@ function styleCardCharacters(characters) {
         figureCaracter.style.width = '250px';
         figureCaracter.style.height = '400px';
         const image = createElement('img', { src: `${character.thumbnail.path}.${character.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
-        const name = createElement('h3', { innerText: character.name, style: {  height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
-
+        const name = createElement('h3', { innerText: character.name, style: {  height: '70px', fontSize: '0.8rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
+        
         // Añadir elementos a la lista
         figureCaracter.appendChild(image);
         list.append(figureCaracter);
