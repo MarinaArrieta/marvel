@@ -290,28 +290,15 @@ function styleCardCharacters(characters) {
 
 // Theme
 function modeLD(){
-    if (mode === 'dark'){
-        document.body.style.background = '#181818';
-        iconMode.className = "fa-solid fa-sun";
-        iconMode.style.fontSize = '1.5rem';
-        iconMode.style.lineHeight = '2rem';
-        iconMode.style.color = '#fbbf24';
-        iconMode.style.width = '2rem';
-        iconMode.style.border = '1px solid #fbbf24';
-        iconMode.style.borderRadius = '0.25rem';
-        mode = 'light';
-    } 
-    else{
-        document.body.style.background = '#fff7ed';
-        iconMode.className = "fa-solid fa-moon";
-        iconMode.style.fontSize = '1.5rem';
-        iconMode.style.lineHeight = '2rem';
-        iconMode.style.color = '#22d3ee';
-        iconMode.style.width = '2rem';
-        iconMode.style.border = '1px solid #22d3ee';
-        iconMode.style.borderRadius = '0.25rem';
-        mode = 'dark';
-    }
+    const darkMode = mode === 'dark';
+    document.body.style.background = darkMode ? '#201910' : '#fff7ed';
+    iconMode.className = darkMode ? "fa-solid fa-sun" : "fa-solid fa-moon";
+    iconMode.style = `font-size: 1.5rem;
+    line-height: 2rem;
+    color: ${darkMode ? '#fbbf24' : '#22d3ee'};
+    width: 2rem;
+    background: ${darkMode ? '#450a0a' : '#082f49'}`;
+    mode = darkMode ? 'light' : 'dark';
 }
 
 modeLightDark.addEventListener('click', ()=> {

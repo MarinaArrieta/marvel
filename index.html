@@ -8,14 +8,17 @@
     <script src="https://kit.fontawesome.com/cd30d5437a.js" crossorigin="anonymous"></script>
 </head>
 <body class="flex flex-col justify-between gap-14 bg-orange-50">
-    <header class="flex flex-col justify-center items-center bg-black">
-        <h1 class="text-5xl font-bold drop-shadow-lg text-white bg-red-700 p-3 italic font-bold font-mono">MARVEL</h1>
-        <figure class="relative z-0 w-full max-h-80 overflow-hidden">
-            <img class="w-full opacity-40" src="./assets/image/marvel.jpg" alt="Marvel">
-        </figure>
+    <header class="flex flex-col justify-center items-center bg-stone-700">
+        <div class="w-full flex justify-center items-center">
+            <h1 class="absolute z-10 text-5xl font-bold drop-shadow-lg text-white bg-red-700 p-3 font-bold font-mono">MARVEL</h1>
+            <figure class="relative z-0 w-full max-h-80 overflow-hidden">
+                <!-- max-h-80 -->
+                <img class="w-full" src="./assets/image/marvel2.png" alt="Marvel">
+            </figure>
+        </div>
         <div id="div-mode-button" class="div-icono w-full h-14 flex justify-center">
             <button id="mode-light-dark">
-                <i id="icon-mode" class="fa-solid fa-moon w-8 text-2xl text-cyan-400  rounded border border-cyan-300 text-center"></i>
+                <i id="icon-mode" class="fa-solid fa-moon w-8 text-2xl text-cyan-400 bg-sky-950 text-center"></i>
             </button>
         </div>
     </header>
@@ -49,7 +52,7 @@
             <section id="container-cards" class="flex flex-col items-center gap-5">
                 <h2 class="w-full text-left text-3xl text-red-700 font-bold">Resultados</h2>
                 <p id="comics-results" class="w-full text-left text-red-700 font-bold"></p>
-                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16"></ul>
+                <ul id="marvel-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16 2xl:justify-between 2xl:gap-12"></ul>
             </section>
             <section id="section-card-comics-characters" class="hidden flex-col items-center gap-5">
                 <article class="flex flex-col gap-7">
@@ -70,7 +73,7 @@
                     <div class="flex flex-col gap-6 md:justify-center">
                         <h3 id="title-indivual-list-card" class="text-2xl text-red-700"></h3>
                         <p id="match-total" class="text-red-700"></p>
-                        <ul id="match-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16"></ul>
+                        <ul id="match-list" class="flex flex-wrap justify-center md:justify-between items-center gap-5 lg:justify-start xl:gap-16 2xl:justify-between 2xl:gap-12"></ul>
                     </div>
                 </article>
             </section>
