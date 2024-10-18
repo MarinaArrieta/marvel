@@ -27,27 +27,33 @@ const matchList = document.getElementById('match-list');
 let matchTotal = document.getElementById('match-total');
 let comicsResults = document.getElementById('comics-results');
 const titleIndivualListCard = document.getElementById('title-indivual-list-card');
+let startPag = document.getElementById('startPag');
+let previewPag = document.getElementById('previewPag');
+let actualPage = 0
+let nextPag = document.getElementById('nextPag');
+let endPag = document.getElementById('endPag');
+const sizePage = 20;
+const limitParam = "&limit=" + sizePage;
 
-async function getApiMarvel(){
+async function getApiMarvel(page=0){
     try{
         let inputType = tipoComicCharacter.value;
         let inputSearch = searchInput.value;
         let orderBy = order.value;
 
-        console.log('input searh',inputType)
-       
+        offsetParam = "";
+        if (page){offsetParam = "&offset=" + page*sizePage}
+
         if (inputType == 'comic'){
-            search_param = '&titleStartsWith=';
+            searchParam = '&titleStartsWith=';
             urlType = urlComics;
         } else {
-            search_param = '&nameStartsWith=';
+            searchParam = '&nameStartsWith=';
             urlType = urlCharacters;
         }
 
         let filterTitle = '';
-        if (inputSearch){
-            filterTitle = search_param + inputSearch;   
-        }
+        if (inputSearch){ filterTitle = searchParam + inputSearch;   }
 
         if(orderBy == 'az' && inputType == 'comic') {orderParam = '&orderBy=title';} 
         else if (orderBy == 'za' && inputType == 'comic') {orderParam = '&orderBy=-title';}
@@ -56,15 +62,25 @@ async function getApiMarvel(){
         else if (orderBy == 'az' && inputType == 'character') {orderParam = '&orderBy=name';}
         else if (orderBy == 'za' && inputType == 'character') {orderParam = '&orderBy=-name';}
 
-        url_final = url + urlType + keyHash + orderParam + filterTitle;
+        url_final = url + urlType + keyHash + orderParam + filterTitle + offsetParam + limitParam;
 
         marvelList.innerHTML = '';
-        console.log(url_final)
+
         const response = await fetch(url_final);
-        console.log('hola',url_final)
-        console.log(response)
         const parsedMarvel = await response.json();
-        console.log(parsedMarvel);
+
+        actualPage = page
+        finalPage = (parsedMarvel.data.total / sizePage).toFixed()
+
+        startPag.dataset["page"] = 0
+        if (actualPage>0){ previewPag.dataset["page"] = actualPage-1 }
+        else{ previewPag.dataset["page"] = 0 }
+
+        if (actualPage<finalPage){ nextPag.dataset["page"] = actualPage+1 }
+        else{ nextPag.dataset["page"] = finalPage }
+
+        endPag.dataset["page"] = finalPage
+
         displayTotal(parsedMarvel.data.total);
         styleCard(parsedMarvel.data.results, inputType);
     }
@@ -73,20 +89,6 @@ async function getApiMarvel(){
     }
 }
 
-document.getElementById("form-search").addEventListener("submit", function(event){
-    getApiMarvel();
-    event.preventDefault()
-});
-
-tipoComicCharacter.addEventListener('input', ()=>{
-    if(tipoComicCharacter.value == 'character'){
-        newOption.style.display = 'none';
-        oldOption.style.display = 'none';
-    } else{
-        newOption.style.display = 'flex';
-        oldOption.style.display = 'flex';
-    }
-});
 
 function displayTotal(total){
     let comicsResults = document.getElementById('comics-results');
@@ -94,7 +96,6 @@ function displayTotal(total){
 }
 
 function styleCardComics(comics) {
-    console.log(comics)
     comics.forEach(comic => {
         // Crear elementos
         const list = createElement('li', {
@@ -126,16 +127,10 @@ function createElement(tag, { innerText, src, style } = {}) {
     return element;
 }
 
-// Manejo del click en el comic
-function handleComicClick(comic) {
-    containerCards.style.display = 'none';
-    sectionCardComicsCharacters.style.display = 'flex';
-    bigCardComic(comic);
-    fetchCharacters(comic);
-}
-
 // Configurar detalles del comic
 function bigCardComic(comic) {
+    containerCards.style.display = 'none';
+    sectionCardComicsCharacters.style.display = 'flex';
     individualImgCard.src = comic.thumbnail.path + '.' + comic.thumbnail.extension;
     individualTitleCard.innerText = comic.title;
     publishedTitle.style.display = 'flex';
@@ -154,13 +149,27 @@ function bigCardComic(comic) {
     matchTotal.innerText = comic.characters.items.length > 0 ? `${comic.characters.items.length} RESULTADOS` : 'NO SE ENCONTRARON';
 }
 
+// Manejo del click en el comic
+function handleComicClick(comic) {
+
+    bigCardComic(comic);
+    individualSourceUrl = comic.resourceURI
+    fetchCharacters(individualSourceUrl);
+}
+
 // Fetch y mostrar personajes
-function fetchCharacters(character) {
-    character.characters.items.forEach(elem => {
-        fetch(`${elem.resourceURI}${keyHash}`)
-            .then(res => res.json())
-            .then(data => {
-                const character = data.data.results[0];
+function fetchCharacters(individualSourceUrl, page=0) {
+
+    offsetParam = ""
+    if (page){ offsetParam = "&offset=" + page*sizePage }
+  
+    charInComicUrl = `${individualSourceUrl}/characters${keyHash}${offsetParam}` + limitParam
+    matchList.innerHTML = "";
+    fetch(charInComicUrl)
+        .then(res => res.json())
+        .then(data => {
+            let characters = data.data.results;
+            characters.forEach(character=>{
                 const list = createElement('li', {
                     style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
                 });
@@ -178,37 +187,38 @@ function fetchCharacters(character) {
                     matchTotal.innerText = character.comics.available > 0 ? `${character.comics.available} RESULTADOS` : 'NO SE ENCONTRARON';
                     titleIndivualListCard.innerText = 'Comics';
                     matchList.innerHTML = "";
-                    big_card_char(character);
+                    handleCharacters(character);
                 });
+
+                actualPage = page
+                finalPage = (data.data.total / sizePage).toFixed()
+                
+                startPag.dataset["page"] = 0
+                if (actualPage>0){ previewPag.dataset["page"] = actualPage-1 }
+                else{ previewPag.dataset["page"] = 0 }
+        
+                if (actualPage<finalPage){ nextPag.dataset["page"] = actualPage+1 }
+                else{ nextPag.dataset["page"] = finalPage }
+        
+                endPag.dataset["page"] = finalPage;
+
+                dataType = "chars_in_comic";
+                startPag.dataset["typeURL"] = dataType;
+                previewPag.dataset["typeURL"] = dataType;
+                nextPag.dataset["typeURL"] = dataType;
+                endPag.dataset["typeURL"] = dataType;
+                startPag.dataset["individualSourceUrl"] = individualSourceUrl;
+                previewPag.dataset["individualSourceUrl"] = individualSourceUrl;
+                nextPag.dataset["individualSourceUrl"] = individualSourceUrl;
+                endPag.dataset["individualSourceUrl"] = individualSourceUrl;
+
             });
-    });
+        });
+
 }
 
-//Fetch y mostrar comics
-function fetchComics(comic) {
-    comic.comics.forEach(elem => {
-        fetch(`${elem.resourceURI}${keyHash}`)
-            .then(res => res.json())
-            .then(data => {
-                const comics = data.data.results[0];
-                const list = createElement('li', {
-                    style: { width: '270px', height: '503px', border: '1px #ffffff', padding: '10px', background: 'linear-gradient(120deg, #ff7575 0%, #4e4e4e 90%)', display: 'flex', flexDirection: 'column', gap: '10px' }
-                });
-                const figureCaracter = document.createElement('figure');
-                matchFigure.style.width = '250px';
-                matchFigure.style.height = '400px';
-                const matchImage = createElement('img', { src: `${comics.thumbnail.path}.${comics.thumbnail.extension}`, style: { width: '100%', height: '100%', border: '3px solid #00137d' } });
-                const matchTitleP = createElement('p', { innerText: comics.title, style: { height: '70px', fontSize: '1rem', color: '#ffffff', fontWeight: 'bold', textShadow: '-2px 2px 2px #00003c' } });
-                titleIndivualListCard.innerText = 'Comics';
-                figureCaracter.appendChild(matchImage);
-                list.append(figureCaracter);
-                list.append(matchTitleP);
-                matchList.append(list);
-            });
-    });
-}
-
-function big_card_char(character) {
+// Configurar detalles del character
+function bigCardChard(character){
     containerCards.style.display = 'none';
     sectionCardComicsCharacters.style.display = 'flex';
     publishedTitle.style.display = 'none';
@@ -220,18 +230,48 @@ function big_card_char(character) {
     individualTitleCard.innerText = character.name;
     description.innerText = character.description || 'No se encontró descripción';
     titleIndivualListCard.innerText = 'Comics';
-
-    Promise.all(character.comics.items.map(fetchComicDetails))
-        .then(comics => {
-            displayComics(comics);
-        });
 }
 
-function fetchComicDetails(elem) {
-    const url_comic = `${elem.resourceURI}${keyHash}`;
-    return fetch(url_comic)
+// Manejo del click en el personaje
+function handleCharacters(character) {
+    bigCardChard(character)
+    individualSourceUrl = character.resourceURI
+    fetchComicFromChar(individualSourceUrl)
+}
+
+function fetchComicFromChar(individualSourceUrl, page=0){
+    offsetParam = ""
+    if (page){ offsetParam = "&offset=" + page*sizePage }
+
+    comic_in_char_url = `${individualSourceUrl}/comics${keyHash}${offsetParam}` + limitParam
+    fetch(comic_in_char_url)
         .then(res => res.json())
-        .then(data => data.data.results[0]);
+        .then(data => {
+            let comics = data.data.results;
+            displayComics(comics);
+
+            actualPage = page
+            finalPage = (data.data.total / sizePage).toFixed()
+            
+            startPag.dataset["page"] = 0
+            if (actualPage>0){ previewPag.dataset["page"] = actualPage-1 }
+            else{ previewPag.dataset["page"] = 0}
+    
+            if (actualPage<finalPage){ nextPag.dataset["page"] = actualPage+1 }
+            else{ nextPag.dataset["page"] = finalPage }
+    
+            endPag.dataset["page"] = finalPage;
+
+            dataType = "comics_in_char";
+            startPag.dataset["typeURL"] = dataType;
+            previewPag.dataset["typeURL"] = dataType;
+            nextPag.dataset["typeURL"] = dataType;
+            endPag.dataset["typeURL"] = dataType;
+            startPag.dataset["individualSourceUrl"] = individualSourceUrl;
+            previewPag.dataset["individualSourceUrl"] = individualSourceUrl;
+            nextPag.dataset["individualSourceUrl"] = individualSourceUrl;
+            endPag.dataset["individualSourceUrl"] = individualSourceUrl;
+        });
 }
 
 function displayComics(comics) {
@@ -283,7 +323,7 @@ function styleCardCharacters(characters) {
 
         list.addEventListener('click', () => {
             matchList.innerHTML = "";
-            big_card_char(character);
+            handleCharacters(character);
         });
     });
 }
@@ -301,26 +341,51 @@ function modeLD(){
     mode = darkMode ? 'light' : 'dark';
 }
 
-modeLightDark.addEventListener('click', ()=> {
-    modeLD();
-});
-
-searchButton.addEventListener('click', ()=>{
-    containerCards.style.display = 'flex';
-    sectionCardComicsCharacters.style.display = 'none';
-});
 
 function styleCard(data, type){
-    if (type =='comic'){
-        styleCardComics(data);
-        // titleIndivualListCard.innerText = 'Personajes';
-    }
-    else{
-        styleCardCharacters(data);
-        // titleIndivualListCard.innerText = 'Comics';
-    }
+    if (type =='comic'){ styleCardComics(data) }
+    else{ styleCardCharacters(data) }
 }
 
+// start
 document.addEventListener("DOMContentLoaded", () => {
     getApiMarvel();
-});
+
+    // submit button for search form
+    document.getElementById("form-search").addEventListener("submit", function(event){
+        containerCards.style.display = 'flex';
+        sectionCardComicsCharacters.style.display = 'none';
+        getApiMarvel();
+        event.preventDefault()
+    });
+    // select input from search form
+    tipoComicCharacter.addEventListener('input', ()=>{
+        if(tipoComicCharacter.value == 'character'){
+            newOption.style.display = 'none';
+            oldOption.style.display = 'none';
+        } else{
+            newOption.style.display = 'flex';
+            oldOption.style.display = 'flex';
+        }
+    });
+
+    // theme button
+    modeLightDark.addEventListener('click', ()=> {
+        modeLD();
+    });
+
+    // pagination buttons
+    document.querySelectorAll(".page-control").forEach(elem=>{
+        elem.addEventListener("click", (e) =>{
+            typeURL = e.target.dataset.typeURL
+            data_page = e.target.dataset.page
+            individualSourceUrl = endPag.dataset["individualSourceUrl"]
+            page = parseInt(data_page)
+
+            if (typeURL == undefined){ getApiMarvel(page=page) } 
+            else if (typeURL=="chars_in_comic"){ fetchCharacters(individualSourceUrl, page=page) } 
+            else if (typeURL=="comics_in_char"){ fetchComicFromChar(individualSourceUrl, page=page) }
+        });
+    });
+
+})
